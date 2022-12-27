@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: producer
+  name: producer
+spec:
+  selector:
+    matchLabels:
+      app: producer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+      - image: producer:latest
+        imagePullPolicy: Never
+        name: producer

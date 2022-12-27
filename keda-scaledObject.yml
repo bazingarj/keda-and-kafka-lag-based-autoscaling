@@ -1,0 +1,31 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: consumer-scaled
+spec:
+  scaleTargetRef:
+    name: consumer # (1)
+  pollingInterval: 10
+  cooldownPeriod: 300 # (2)
+  minReplicaCount: 1
+  maxReplicaCount:  5 # (3)
+  advanced:
+    horizontalPodAutoscalerConfig: # (4)
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 60
+          policies:
+            - type: Pods
+              value: 1
+              periodSeconds: 180
+  triggers: # (5)
+    - type: prometheus
+      metadata:
+#        bootstrapServers: MACHINE_IP:30092,MACHINE_IP:30093
+#        consumerGroup: my-group-1
+#        topic: test1
+#        lagThreshold: '4'
+        serverAddress: http://prometheus-server.default.svc.cluster.local
+        metricName: kafka_consumergroup_group_lag
+        threshold: '50'
+        query: avg(kafka_consumergroup_group_lag{topic="test1", group="my-group-1", service="kafka-lag-exporter-service"})
