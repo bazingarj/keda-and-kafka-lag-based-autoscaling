@@ -1,0 +1,1 @@
+# keda-and-kafka-lag-based-autoscaling
