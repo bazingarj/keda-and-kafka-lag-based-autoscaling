@@ -91,7 +91,7 @@ kubectl apply -f keda-scaledObject.yml
 ```
 
 
-# Addition Content:
+# Additional Content:
 
 Sample consumer and Producer code which create 10 event lag each second
 
